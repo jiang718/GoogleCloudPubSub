@@ -31,7 +31,9 @@ gcloud beta emulators pubsub start --host-port=maximus.cs.umn.edu:46839
 3.1 if the emulator are in a local machine
 ```
 gcloud beta emulators pubsub start --host-port=localhost:8086
-or
+```
+or without parameters
+```
 gcloud beta emulators pubsub start
 ```
 
