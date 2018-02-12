@@ -27,7 +27,7 @@ to be able start the server emulator
 export GOOGLE_APPLICATION_CREDENTIALS="[PATH]"
 ```
 
-4.Start the environment of emulator
+4.Start the server emulator
 
 4.1 if the emulator are in a remote machine 
 ```
