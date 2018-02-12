@@ -80,7 +80,10 @@ else
 export PUBSUB_EMULATOR_HOST=<host-ip-address> (eg: maximus.cs.umn.edu:46389)
 export PUBSUB_PROJECT_ID=<project-id>
 
-4.Run
+4.Run Client (After running the server)
 ```
 ./client.go <CLIENT_NAME>
 ```
+
+5.Run multiple clients at a time
+Please make sure those clients have different names
