@@ -52,7 +52,8 @@ gcloud beta emulators pubsub start
 ------client part------
 1.Install Go
 ```
-wget https://dl.google.com/go/go1.9.3.linux-amd64.tar.gztar -xvf go1.9.3.linux-amd64.tar.gz
+wget https://dl.google.com/go/go1.9.3.linux-amd64.tar.gz
+tar -xvf go1.9.3.linux-amd64.tar.gz
 mkdir gomaster && mv go gomaster
 cd gomaster
 export GOROOT=`pwd`/go
