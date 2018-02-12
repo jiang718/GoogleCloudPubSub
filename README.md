@@ -2,7 +2,7 @@
 
 ----server part--------
 
-1: Install GoogleCloud 
+1: Install GoogleCloud SDK
 ```
 wget https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-186.0.0-linux-x86_64.tar.gz
 tar -xvf google-cloud-sdk-186.0.0-linux-x86_64.tar.gz
@@ -16,9 +16,20 @@ gcloud components install pubsub-emulator
 gcloud components update
 ```
 
-3.Start the environment of emulator
+3. Get the service Account JSON for a specific <Project-id> that you want to use:
+3.1 Get the service-account.json 
+Follow the instructions on
+https://cloud.google.com/pubsub/docs
+to be able start the server emulator
 
-3.1 if the emulator are in a remote machine 
+3.2 Set Environment:
+```
+export GOOGLE_APPLICATION_CREDENTIALS="[PATH]"
+```
+
+4.Start the environment of emulator
+
+4.1 if the emulator are in a remote machine 
 ```
 gcloud beta emulators pubsub start --host-port=<HOST>:<PORT>
 ```
@@ -28,7 +39,7 @@ For Example:
 gcloud beta emulators pubsub start --host-port=maximus.cs.umn.edu:46839
 ```
 
-3.1 if the emulator are in a local machine
+4.2 if the emulator are in a local machine
 ```
 gcloud beta emulators pubsub start --host-port=localhost:8086
 ```
@@ -59,7 +70,17 @@ cd GoogleCloudPubSub
 go build client.go 
 ```
 
-3.Run
+3.Set Environment
+if the server is on the same machine:
+```
+gcloud beta emulators pubsub env-init 
+```
+else
+```
+export PUBSUB_EMULATOR_HOST=<host-ip-address> (eg: maximus.cs.umn.edu:46389)
+export PUBSUB_PROJECT_ID=<project-id>
+
+4.Run
 ```
 ./client.go <CLIENT_NAME>
 ```
