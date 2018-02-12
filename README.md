@@ -3,10 +3,12 @@
 ----server part--------
 
 1: Install GoogleCloud 
+```
 wget https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-186.0.0-linux-x86_64.tar.gz
 tar -xvf google-cloud-sdk-186.0.0-linux-x86_64.tar.gz
 cd google-cloud-sdk/bin
 ./install.sh
+```
 
 2.Intall fake pubsub server
 gcloud components install pubsub-emulator
