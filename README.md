@@ -40,7 +40,7 @@ export GOOGLE_APPLICATION_CREDENTIALS="PATH_TO_GIT_REPO/service-account.json"
 ```
 
 6.Start the server emulator
-6.1 if the emulator are in a remote machine 
+6.1 if the server are in a remote machine 
 ```
 gcloud beta emulators pubsub start --host-port=<HOST>:<PORT>
 ```
@@ -48,7 +48,7 @@ For Example:
 ```
 gcloud beta emulators pubsub start --host-port=maximus.cs.umn.edu:46839
 ```
-6.2 if the emulator are in a local machine
+6.2 if the server are in a local machine
 ```
 gcloud beta emulators pubsub start --host-port=localhost:8086
 ```
@@ -57,11 +57,11 @@ or without parameters
 gcloud beta emulators pubsub start
 ```
 7.Test the program
-if the server is on the same machine:
+if the server and the client are on the same machine:
 ```
 gcloud beta emulators pubsub env-init 
 ```
-else
+if the server and the client are on different machines
 ```
 export PUBSUB_EMULATOR_HOST=<host-ip-address> (eg: maximus.cs.umn.edu:46389)
 export PUBSUB_PROJECT_ID="simple-pubsub"
