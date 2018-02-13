@@ -65,10 +65,24 @@ func ExistTopic(client *pubsub.Client, ctx context.Context, topicName string)(*p
         return topic, false
 	}
 	if !ok {
-		fmt.Println("Topic doesn't exist")
+		fmt.Println("Failed searching for this topic. Topic doesn't exist")
         return topic, false
 	}
     return topic, true
+}
+
+func ExistSubscription(client *pubsub.Client, ctx context.Context, subName string) (bool) {
+    sub := client.Subscription(subName)
+	ok, err := sub.Exists(ctx)
+	if err != nil {
+		fmt.Println("Failed to operating searching subscription: %v", err)
+        return false
+	}
+	if !ok {
+		fmt.Println("Failed searching for this subscription. Subscription doesn't exist")
+        return false
+	}
+    return true
 }
 
 
@@ -77,10 +91,15 @@ func Subscribe(client *pubsub.Client, ctx context.Context, subName string, topic
     if (existStatus == false) {
         return false
     }
+    existSubStatus := ExistSubscription(client, ctx, subName)
+    if (existSubStatus == true) {
+		fmt.Println("Failed. Already subscribes this topic before.")
+        return false
+    }
     sub, err := client.CreateSubscription(ctx, subName,
        pubsub.SubscriptionConfig{Topic: topic})
     if err != nil {
-	    log.Fatalf("Failed to subscribe: %v for %v", err, sub)
+	    fmt.Println("Failed to subscribe: %v for %v", err, sub)
         return false
     }
     return true
@@ -128,6 +147,7 @@ type GlobalStatus struct {
     subTotal int                    //total subscription
     subExist map[string]bool       //whether this supscription is canceled
     clientName string                //the name of this client
+    projectId string
     //chans = [10000]chan int         //the channels to deal with multiple supscription
 }
 
@@ -184,11 +204,11 @@ func TalkToServer(client *pubsub.Client, globalStatus *GlobalStatus) {
                     subName := globalStatus.clientName + "-" + topicName
                     subStatus := Subscribe(client, ctx, subName, topicName)
                     if subStatus == true {
-                        fmt.Printf("Successfully subscriped to %v.\n", topicName);
+                        fmt.Printf("Successfully subscribed to %v.\n", topicName);
                         globalStatus.sublist[globalStatus.subTotal] = subName
                         globalStatus.subExist[subName] = true
                         globalStatus.subTotal++;
-                        go ReceiveSingleForever(client.Subscription(subName), ctx)
+                        go ReceiveSingleForever(client.Subscription(subName), ctx, globalStatus)
 				        //PrintSubs(client)
                     }
                 }
@@ -202,7 +222,7 @@ func TalkToServer(client *pubsub.Client, globalStatus *GlobalStatus) {
                 } else {
                     topicName = s[1]
                     subName := globalStatus.clientName + "-" + topicName
-                    unsubStatus := Unsubscribe(client, ctx, subName, topicName) 
+                    unsubStatus := Unsubscribe(client, ctx, subName, topicName)
                     if unsubStatus == true {
                         fmt.Printf("Successfully unsubscriped from %v.\n", topicName);
                         globalStatus.subExist[subName] = false
@@ -230,9 +250,14 @@ func TalkToServer(client *pubsub.Client, globalStatus *GlobalStatus) {
             if (globalStatus.whetherJoin == true) {
                 fmt.Println("Already join the server!")
             } else {
-                fmt.Println("Successfully join the server!")
+                status := true
+                client, status = Join(context.Background(), "simple-pubsub")
+                if (status != false) {
+                    fmt.Println("Successfully join the server!")
+                    globalStatus.whetherJoin = true
+                    FindPreviousSubscriptions(client, globalStatus)
+                }
             }
-            globalStatus.whetherJoin = true
         } else if (strings.Contains(input, "-l")) {
             if (globalStatus.whetherJoin == false) {
                 fmt.Println("Already leave the server!")
@@ -243,6 +268,7 @@ func TalkToServer(client *pubsub.Client, globalStatus *GlobalStatus) {
         } else if (strings.Contains(input, "-r")) {
             PrintSubs(client, globalStatus)
         }
+        fmt.Println()
         PrintHelp()
     }
 }
@@ -285,93 +311,39 @@ func ReceiveSingle(sub *pubsub.Subscription, cctx context.Context) {
 }
 
 
-func ReceiveSingleForever(sub *pubsub.Subscription, ctx context.Context) {
+func ReceiveSingleForever(sub *pubsub.Subscription, ctx context.Context, globalStatus *GlobalStatus) {
     for {
-        cctx,_ := context.WithCancel(ctx)
-        err := sub.Receive(cctx, func(ctx context.Context, msg *pubsub.Message) {
-                fmt.Printf("Got message: %q\n", string(msg.Data))
-                msg.Ack()
-        })
-        if err != nil {
+        if globalStatus.whetherJoin == true {
+            cctx,_ := context.WithCancel(ctx)
+            err := sub.Receive(cctx, func(ctx context.Context, msg *pubsub.Message) {
+                    fmt.Printf("Got message: %q\n", string(msg.Data))
+                    msg.Ack()
+            })
+            if err != nil {
+            }
         }
     }
 }
 
-
-//3. an subscritpion come in, sublist add by 1, insert new routine to sublist
-func AddSubscription(client *pubsub.Client, sub *pubsub.Subscription) {
-}
 
 //receive message from clients in another thread
-func ReceiveMessage(projectId string, globalStatus *GlobalStatus) {
-    //1. read subscriptions and build an array of subscriber based on server
-    //todo
-
-    //2. start those server routine, inside each routine, they run for ever
-
-
-    //4. unsubscrip -> delete the subscriber (everytime, check whether sub exist before trying to receive anything)
-
-
-    //var mu sync.Mutex
+func FindPreviousSubscriptions(client *pubsub.Client, globalStatus *GlobalStatus) {
     ctx := context.Background()
-	client,_ := pubsub.NewClient(ctx, projectId)
+	it := client.Subscriptions(ctx)
     for {
-        if ((*globalStatus).whetherJoin == true) {
-            //fmt.Println("Into whether join")
-	        it := client.Subscriptions(ctx)
-            k := 0
-            for {
-                //time.Sleep(7500000000)
-                //fmt.Println("Im receiving")
-                k = k +1
-                //fmt.Println("Into for ", k)
-                sub, err := it.Next()
-                if err == iterator.Done {
-                    break
-                }
-                if err != nil {
-                }
-                //fmt.Println("after it.Next()")
-                args := strings.Split(sub.String(), "/")
-                //fmt.Println("Find sub:", args[3])
-                name := strings.Split(args[3], "-")
-                if (name[0] == globalStatus.clientName) {
-                    //fmt.Println("Start check sub: " + args[3])
-                    //received := 0
-                    cctx,_ := context.WithCancel(ctx)
-                    go ReceiveSingle(sub, cctx);
-                    //err := sub.Receive(cctx, func(ctx context.Context, msg *pubsub.Message) {
-                    //        fmt.Printf("Got message: %q\n", string(msg.Data))
-                    //        msg.Ack()
-                    //})
-                    //if err != nil {
-                    //}
-                }
-            }
-            //if (globalStatus.subTotal == 2) {
-            //    fmt.Println("sub Toal ==2")
-            //}
-            //if (globalStatus.subTotal == 1) {
-            //    fmt.Println("sub Toal ==1")
-            //}
-            //for i := 0; i < globalStatus.subTotal; i++ {
-            //    if (globalStatus.subExist[globalStatus.sublist[i]] == true) {
-            //        fmt.Println("Start check sub: " + globalStatus.sublist[i])
-            //        //received := 0
-            //        sub := client.Subscription(globalStatus.sublist[i])
-            //        cctx,_ := context.WithCancel(ctx)
-            //        err := sub.Receive(cctx, func(ctx context.Context, msg *pubsub.Message) {
-            //                fmt.Printf("Got message: %q\n", string(msg.Data))
-            //                msg.Ack()
-            //        })
-            //        if err != nil {
-            //        }
-            //    }
-            //}
+        sub, err := it.Next()
+        if err == iterator.Done {
+            break
+        }
+        if err != nil {
+        }
+        args := strings.Split(sub.String(), "/")
+        name := strings.Split(args[3], "-")
+        if (name[0] == globalStatus.clientName) {
+            cctx,_ := context.WithCancel(ctx)
+            go ReceiveSingleForever(sub, cctx, globalStatus);
         }
     }
-    fmt.Println("Finish receiving")
 }
 
 func main() {
@@ -380,14 +352,14 @@ func main() {
     } else if (strings.Contains(os.Args[1], "-")) {
         fmt.Println("Please don't put - in the client name.")
     } else {
-        client, status := Join(context.Background(), "simple-pubsub")
+        //client, status := Join(context.Background(), "simple-pubsub")
         //ctx := context.Background()
-        globalStatus := GlobalStatus{whetherJoin: status, subTotal: 0}
+        globalStatus := GlobalStatus{whetherJoin: false, subTotal: 0, projectId : "simple-pubsub"}
         globalStatus.whetherJoin = false
         globalStatus.subTotal = 0
         globalStatus.clientName = os.Args[1]
         globalStatus.subExist = make(map[string]bool)
         //go ReceiveMessage("simple-pubsub", &globalStatus)
-        TalkToServer(client, &globalStatus)
+        TalkToServer(nil, &globalStatus)
     }
 }
