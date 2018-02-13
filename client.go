@@ -53,9 +53,9 @@ func ShowAllTopics(client *pubsub.Client, ctx context.Context) {
 }
 
 func ExistTopic(client *pubsub.Client, ctx context.Context, topicName string)(*pubsub.Topic, bool) {
-    fmt.Println("Let's check all topics")
-    ShowAllTopics(client, ctx)
-    fmt.Println("Let's check one topic", topicName)
+    //fmt.Println("Let's check all topics")
+    //ShowAllTopics(client, ctx)
+    //fmt.Println("Let's check one topic", topicName)
     var topic *pubsub.Topic
 	topic = client.Topic(topicName)
     //fmt.Println("The name of currently checking topic is :", (*topic).name)
