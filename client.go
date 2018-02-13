@@ -20,7 +20,7 @@ func Join(ctx context.Context, projectId string)(*pubsub.Client, bool) {
 	//ctx := context.Background() 
 	client, err := pubsub.NewClient(ctx, projectId)
 	if err != nil {
-        log.Fatalf("Failed to create client: %v", err)
+        fmt.Println("Failed to create client: %v", err)
         return client, false
 	}
     return client, true
@@ -30,7 +30,7 @@ func Join(ctx context.Context, projectId string)(*pubsub.Client, bool) {
 func CreateTopic(client *pubsub.Client, ctx context.Context, topicName string) (*pubsub.Topic, error) {
 	topic, err := client.CreateTopic(ctx, topicName)
 	if err != nil {
-	    log.Fatalf("Failed to create topic: %v", err)
+	    fmt.Println("Failed to create topic: %v", err)
 	}
     return topic, err
 }
@@ -65,7 +65,7 @@ func ExistTopic(client *pubsub.Client, ctx context.Context, topicName string)(*p
         return topic, false
 	}
 	if !ok {
-		log.Fatalf("Topic doesn't exist")
+		fmt.Println("Topic doesn't exist")
         return topic, false
 	}
     return topic, true
@@ -89,7 +89,7 @@ func Subscribe(client *pubsub.Client, ctx context.Context, subName string, topic
 func Unsubscribe(client *pubsub.Client, ctx context.Context, subName string, topicName string)(bool) {
     sub := client.Subscription(subName)
     if err := sub.Delete(ctx); err != nil {
-	    log.Fatalf("Failed to unsubscribe: %v", err)
+	    fmt.Println("Failed to unsubscribe: %v", err)
         return false
     }
     return true
@@ -184,7 +184,7 @@ func TalkToServer(client *pubsub.Client, globalStatus *GlobalStatus) {
                     subName := globalStatus.clientName + "-" + topicName
                     subStatus := Subscribe(client, ctx, subName, topicName)
                     if subStatus == true {
-                        fmt.Printf("Successfully subscriped to %v in list %d.\n", topicName, globalStatus.subTotal);
+                        fmt.Printf("Successfully subscriped to %v.\n", topicName);
                         globalStatus.sublist[globalStatus.subTotal] = subName
                         globalStatus.subExist[subName] = true
                         globalStatus.subTotal++;
