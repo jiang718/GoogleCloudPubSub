@@ -1,0 +1,125 @@
+Test Cases for Google Cloud PubSub
+
+Note: The server will records all created subscriptions and topics unless it closes and runs again. So, if you stops somewhere and want to start over from test case 1, please close the server and re run it.
+
+1.Test on the same machine:
+export GOOGLE_APPLICATION_CREDENTIALS="PATH_TO_JSON_FILE/service-account.json"
+
+Server Side:
+gcloud beta emulators pubsub start
+
+Client Side:
+gcloud beta emulators pubsub env-init
+go build client.go
+
+
+2.Test on different machines
+Server Side:
+export GOOGLE_APPLICATION_CREDENTIALS="PATH_TO_JSON_FILE/service-account.json"
+gcloud beta emulators pubsub start --host-port=<host>:<port>
+(eg --host-port=maximus.cs.umn.edu:46839)
+
+Client Side:
+export GOOGLE_APPLICATION_CREDENTIALS="PATH_TO_JSON_FILE/service-account.json"
+export PUBSUB_EMULATOR_HOST=<host-ip-address> (eg:maximus.cs.umn.edu:46389)
+export PUBSUB_PROJECT_ID="simple-pubsub"
+
+
+
+Test Case 1: create topic before join
+./client Tom
+-c Topic1
+Expected Result: Can't create topic because doesn't join
+
+Test Case 2: Subscribe a topic that doesn't exist
+./client Tom
+-j
+-s Topic2
+Expected Result: Subscription fails
+
+Test Case 3: Subscribe a topic that exists
+./client Tom
+-j
+-c Topic3
+-s Topic3
+Expected Result: Subscribe success
+
+Test Case 4: Create a topic twice
+./client Tom
+-j
+-c Topic4
+-c Topic4
+Expected Result: Can't create the topic the second time
+
+Test Case 5: Subscribe a topic twice
+./client Tom
+-j
+-c Topic5
+-s Topic5
+-s Topic5
+Expected Result: Can't subscribe the topic the second time
+
+Test Case 6: Unsubscribe a topic that doesn't exist
+./client Tom
+-j
+-u Topic6
+Expected Result: Can't unsubscribe because the topic doesn't exist
+
+Test Case 7: Unsubscribe a topic that doesn't subscribe before
+./client Tom
+-j
+-c Topic7
+-u Topic7
+
+Test Case 8: A client with subscriptions leaves the server
+./client Tom
+-j
+-c Topic8
+-s Topic8
+-l
+-p yes Topic8
+Expected Result: can't receive "yes"
+
+Test Case 9: A client with subscription leaves and then join the server
+./client Tom
+-j
+-c Topic9
+-s Topic9
+-l
+-j
+-p yes Topic9
+Expected Result: Receive "yes"
+
+Test Case 10: A client with subscription closes,  re-runs and joins the server
+./client Tom
+-j
+-c Topic10
+-s Topic10
+ctrl+c (close the program)
+./client Tom
+-p yes Topic10
+Expected Result: Receive "yes"
+
+Test Case 11: Another client publishes something that this client subscribes
+./client Tom
+-j
+-c Topic11
+-s Topic11
+
+./client Jessy
+-j
+-p yes Topic11
+Expected Result: "Tom" receives "yes"
+
+
+Test Case 11: Another client publishes something that both clients subscribe
+./client Tom
+-j
+-c Topic11
+-s Topic11
+
+./client Jessy
+-j
+-s Topic11
+-p yes Topic11
+Expected Result: All clients receives "yes"
