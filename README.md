@@ -32,7 +32,6 @@ go get -u cloud.google.com/go/pubsub
 cd gopath
 git clone https://github.com/jiang718/GoogleCloudPubSub
 cd GoogleCloudPubSub
-go build client.go 
 ```
 
 5 Set Environment for GOOGLE CLOUD API:
@@ -66,6 +65,7 @@ else
 ```
 export PUBSUB_EMULATOR_HOST=<host-ip-address> (eg: maximus.cs.umn.edu:46389)
 export PUBSUB_PROJECT_ID="simple-pubsub"
+go build client.go 
 ./client.go <CLIENT_NAME>  (a random name such as "Tom" is fine)
 ```
 
