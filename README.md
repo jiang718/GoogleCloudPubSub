@@ -39,7 +39,7 @@ cd GoogleCloudPubSub
 export GOOGLE_APPLICATION_CREDENTIALS="PATH_TO_GIT_REPO/service-account.json"
 ```
 
-6.Start the server emulator
+6.Start the server emulator\n
 6.1 if the server are in a remote machine 
 ```
 gcloud beta emulators pubsub start --host-port=<HOST>:<PORT>
