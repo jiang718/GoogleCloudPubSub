@@ -60,7 +60,7 @@ gcloud beta emulators pubsub start
 <br />
 6.Set the client Environment<br />
 Go to the git repo folder "GoogleCloudPubSub"<br />
-First build the client using go
+First build the client using go<br />
 ```
 ./buildclient
 export GOOGLE_APPLICATION_CREDENTIALS="`pwd`/service-account.json"
