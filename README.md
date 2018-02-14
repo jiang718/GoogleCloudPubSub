@@ -1,4 +1,5 @@
 # GoogleCloudPubSub
+This is a project simulating pubsub system using google cloud API and golang.<br />
 
 Before follow the instruction, please make sure that you are using bash, because some CSE machines use tcsh. <br/>
 
@@ -10,13 +11,16 @@ cd google-cloud-sdk
 ./install.sh
 ```
 
-2.Intall fake pubsub server
+2.Intall fake pubsub server<br />
+Please first open a new terminal inorder to make the bash.rc to make changes. Otherwise "gcloud" command won't be found. <br />
+Go to a designed folder that you want to run the server emulator. Make sure it's not inside the Google Cloud SDK folder.
 ```
 gcloud components install pubsub-emulator
 gcloud components update
 ```
 
 3.Install Go
+Go to a desired folder (or current folder) that you want to install "go". The project will be installed under this folder too.
 ```
 wget https://dl.google.com/go/go1.9.3.linux-amd64.tar.gz
 tar -xvf go1.9.3.linux-amd64.tar.gz
