@@ -40,12 +40,7 @@ git clone https://github.com/jiang718/GoogleCloudPubSub
 cd GoogleCloudPubSub
 ```
 
-5 Set Environment for GOOGLE CLOUD API:
-```
-export GOOGLE_APPLICATION_CREDENTIALS="PATH_TO_GIT_REPO/service-account.json"
-```
-
-6.Start the server emulator<br />
+5.Start the server emulator<br />
 6.1 if the server are in a remote machine 
 ```
 gcloud beta emulators pubsub start --host-port=<HOST>:<PORT>
@@ -62,17 +57,33 @@ or without parameters
 ```
 gcloud beta emulators pubsub start
 ```
-7.Test the program
-if the server and the client are on the same machine:
+<br />
+6.Set the client Environment
+Go to the git repo folder "GoogleCloudPubSub"<br />
+First build the client using go
+```
+./buildclient
+export GOOGLE_APPLICATION_CREDENTIALS="`pwd`/service-account.json"
+```
+If the server and the client are on the same machine:
 ```
 gcloud beta emulators pubsub env-init 
 ```
+Execute the command printting from the above command (starts with "export"), and then
+```
+export PUBSUB_PROJECT_ID="simple-pubsub"
+```
+
+
 if the server and the client are on different machines
 ```
 export PUBSUB_EMULATOR_HOST=<host-ip-address> (eg: maximus.cs.umn.edu:46389)
 export PUBSUB_PROJECT_ID="simple-pubsub"
-go build client.go 
-./client.go <CLIENT_NAME>  (a random name such as "Tom" is fine)
 ```
 
+Finally,
+```
+export PUBSUB_PROJECT_ID="simple-pubsub"
+```
+<br />
 Note: When run multiple clients, please make sure those clients have different names

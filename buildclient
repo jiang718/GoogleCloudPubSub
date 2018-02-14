@@ -1,0 +1,5 @@
+export GOROOT=`pwd`/../../go
+export PATH=$PATH:$GOROOT/bin
+export GOPATH=`pwd`/../../gopath
+export PUBSUB_PROJECT_ID="simple-pubsub"
+go build client.go

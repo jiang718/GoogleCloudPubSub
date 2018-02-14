@@ -1,0 +1,2 @@
+export GOOGLE_APPLICATION_CREDENTIALS="~/csci5105/gomaster/gopath/GoogleCloudPubSub/service-account.json"
+export MAIN=1
