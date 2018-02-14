@@ -58,7 +58,7 @@ or without parameters
 gcloud beta emulators pubsub start
 ```
 <br />
-6.Set the client Environment
+6.Set the client Environment<br />
 Go to the git repo folder "GoogleCloudPubSub"<br />
 First build the client using go
 ```
