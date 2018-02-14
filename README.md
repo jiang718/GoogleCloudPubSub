@@ -1,10 +1,12 @@
 # GoogleCloudPubSub
 
+Before follow the instruction, please make sure that you are using bash, because some CSE machines use tcsh. <br/>
+
 1: Install GoogleCloud SDK
 ```
 wget https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-186.0.0-linux-x86_64.tar.gz
 tar -xvf google-cloud-sdk-186.0.0-linux-x86_64.tar.gz
-cd google-cloud-sdk/bin
+cd google-cloud-sdk
 ./install.sh
 ```
 
@@ -50,7 +52,7 @@ gcloud beta emulators pubsub start --host-port=maximus.cs.umn.edu:46839
 ```
 6.2 if the server are in a local machine
 ```
-gcloud beta emulators pubsub start --host-port=localhost:8086
+gcloud beta emulators pubsub start --host-port=localhost:8085
 ```
 or without parameters
 ```

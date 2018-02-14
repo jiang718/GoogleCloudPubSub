@@ -79,7 +79,7 @@ func ExistSubscription(client *pubsub.Client, ctx context.Context, subName strin
         return false
 	}
 	if !ok {
-		fmt.Println("Failed searching for this subscription. Subscription doesn't exist")
+		//fmt.Println("Failed searching for this subscription. Subscription doesn't exist")
         return false
 	}
     return true
