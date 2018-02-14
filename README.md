@@ -63,7 +63,9 @@ Go to the git repo folder "GoogleCloudPubSub"<br />
 First build the client using go<br />
 ```
 ./buildclient
-export GOOGLE_APPLICATION_CREDENTIALS="`pwd`/service-account.json"
+```
+```
+export GOOGLE_APPLICATION_CREDENTIALS=`pwd`/service-account.json
 ```
 If the server and the client are on the same machine:
 ```
@@ -80,10 +82,9 @@ if the server and the client are on different machines
 export PUBSUB_EMULATOR_HOST=<host-ip-address> (eg: maximus.cs.umn.edu:46389)
 export PUBSUB_PROJECT_ID="simple-pubsub"
 ```
-
 Finally,
 ```
-export PUBSUB_PROJECT_ID="simple-pubsub"
+./client <ClientName>
 ```
 <br />
 Note: When run multiple clients, please make sure those clients have different names
