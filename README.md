@@ -98,5 +98,5 @@ Finally,
 ```
 <br />
 Note: When run multiple clients, please make sure those clients have different names. <br />
-If the client doesn't connect to the server, please make sure that PUBSUB_EMULATOR_HOST and PUBSUB_PROJECT_ID set correctly in the client side. <br />
+If the client doesn't connect to the server, please make sure that GOOGLE_APPLICATION_CREDENTIALS, PUBSUB_EMULATOR_HOST and PUBSUB_PROJECT_ID set correctly in the client side. <br />
 If you can't build the client, please make sure that go is installed and GOPATH, GOROOT, PATH are all set up correctly.
