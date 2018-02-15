@@ -1,7 +1,7 @@
 # GoogleCloudPubSub
 This is a project simulating pubsub system using google cloud API and golang.<br />
 
-Before follow the instruction, please make sure that you are using bash for your machine. Please look for alternative commands for "export". <br/>
+Before follow the instruction, please make sure that you are using bash for your machine. If not, please look for alternative commands for "export". <br/>
 
 1: Install GoogleCloud SDK
 ```
