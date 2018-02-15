@@ -133,7 +133,7 @@ func PrintHelp() {
     fmt.Println("Please Input Instruction:")
     fmt.Println("-j (Run this to join the server)")
     fmt.Println("-l (Run this to leave the serve)")
-    fmt.Println("-r (list all subscriptions)")
+    //fmt.Println("-r (list all subscriptions)")
     fmt.Println("-c TopicName (Run this to create a topic)")
     fmt.Println("-s TopicName (Run this to subscribe a topic)")
     fmt.Println("-u TopicName (Run this to unsubscribe the server)")
@@ -265,9 +265,10 @@ func TalkToServer(client *pubsub.Client, globalStatus *GlobalStatus) {
                 fmt.Println("Successfully leave the server!")
             }
             globalStatus.whetherJoin = false
-        } else if (strings.Contains(input, "-r")) {
-            PrintSubs(client, globalStatus)
         }
+        //else if (strings.Contains(input, "-r")) {
+        //    PrintSubs(client, globalStatus)
+        //}
         fmt.Println()
         PrintHelp()
     }
