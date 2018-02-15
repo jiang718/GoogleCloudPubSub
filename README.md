@@ -20,7 +20,7 @@ gcloud components update
 gcloud components install beta
 ```
 
-3.Install Go
+3.Install Go<br />
 Go to a desired folder (or current folder) that you want to install "go". The project will be installed under this folder too.
 ```
 wget https://dl.google.com/go/go1.9.3.linux-amd64.tar.gz
