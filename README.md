@@ -42,12 +42,12 @@ cd GoogleCloudPubSub
 ```
 
 5.Start the server emulator<br />
-6.1 if the server are in a local machine
+5.1 if the server are in a local machine
 ```
 gcloud beta emulators pubsub start --host-port=localhost:<PORT>
 ```
 
-6.2 if the server are in a remote machine 
+5.2 if the server are in a remote machine 
 ```
 gcloud beta emulators pubsub start --host-port=<HOST>:<PORT>
 ```
