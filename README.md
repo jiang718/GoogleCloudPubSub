@@ -62,7 +62,7 @@ You can use "ifconfig" to look for the ip address of the machine that runs serve
 Go to the git repo folder "GoogleCloudPubSub"<br />
 First build the client using go<br />
 ```
-./buildclient
+./buildClient
 ```
 Then set up environment for google cloud API.
 ```

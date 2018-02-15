@@ -123,3 +123,20 @@ Test Case 11: Another client publishes something that both clients subscribe
 -s Topic11
 -p yes Topic11
 Expected Result: All clients receives "yes"
+
+----negative test cases-----
+Test Case 12:
+machine 1:
+./client Tom
+-j 
+-c Topic12
+-s Topic12
+machine 2 or Open Another Terminal in the same machine:
+./client Tom
+-c Topic13
+-s Topic13
+Back to machine 1:
+-p content Topic13
+Expected Result: client "Tom" should receive message on machine 1
+Wrong Result: machine 1 doesn't receive message, because the client side only check whether there are subscriptions from previous running instance at the beginning, however "Tom" on machine 2 subscribes Topic13 after the running of "Tom" on machine 1. 
+Conclusion: the client side can't handle multiple instance of the same clients running at the same time.
