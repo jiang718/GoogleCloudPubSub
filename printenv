@@ -1,8 +1,0 @@
-echo GOOGLE_APPLICATION_CREDENTIALS is set to $GOOGLE_APPLICATION_CREDENTIALS
-echo
-echo GOROOT is set to $GOROOT
-echo
-echo PATH is set to $PATH
-echo
-echo GOPATH is set to $GOPATH
-echo

@@ -1,0 +1,12 @@
+echo GOROOT is set to $GOROOT
+echo
+echo PATH is set to $PATH
+echo
+echo GOPATH is set to $GOPATH
+echo
+echo GOOGLE_APPLICATION_CREDENTIALS is set to $GOOGLE_APPLICATION_CREDENTIALS
+echo
+echo PUBSUB_EMULATOR_HOST is set to $PUBSUB_EMULATOR_HOST
+echo
+echo PUBSUB_PROJECT_ID is set to $PUBSUB_PROJECT_ID
+echo

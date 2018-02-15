@@ -1,7 +1,7 @@
 # GoogleCloudPubSub
 This is a project simulating pubsub system using google cloud API and golang.<br />
 
-Before follow the instruction, please make sure that you are using bash, because some CSE machines use tcsh. <br/>
+Before follow the instruction, please make sure that you are using bash for your machine. Please look for alternative commands for "export". <br/>
 
 1: Install GoogleCloud SDK
 ```
@@ -17,6 +17,7 @@ Go to a designed folder that you want to run the server emulator. Make sure it's
 ```
 gcloud components install pubsub-emulator
 gcloud components update
+gcloud components install beta
 ```
 
 3.Install Go
@@ -41,7 +42,12 @@ cd GoogleCloudPubSub
 ```
 
 5.Start the server emulator<br />
-6.1 if the server are in a remote machine 
+6.1 if the server are in a local machine
+```
+gcloud beta emulators pubsub start --host-port=localhost:<PORT>
+```
+
+6.2 if the server are in a remote machine 
 ```
 gcloud beta emulators pubsub start --host-port=<HOST>:<PORT>
 ```
@@ -49,39 +55,43 @@ For Example:
 ```
 gcloud beta emulators pubsub start --host-port=maximus.cs.umn.edu:46839
 ```
-6.2 if the server are in a local machine
-```
-gcloud beta emulators pubsub start --host-port=localhost:8085
-```
-or without parameters
-```
-gcloud beta emulators pubsub start
-```
+You can use "ifconfig" to look for the ip address of the machine that runs server. <br />
 <br />
+
 6.Set the client Environment<br />
 Go to the git repo folder "GoogleCloudPubSub"<br />
 First build the client using go<br />
 ```
 ./buildclient
 ```
+Then set up environment for google cloud API.
 ```
 export GOOGLE_APPLICATION_CREDENTIALS=`pwd`/service-account.json
 ```
+
+The process for setting host and port varies depent on whether the server and the clients are in the same machine. <br />
 If the server and the client are on the same machine:
 ```
 gcloud beta emulators pubsub env-init 
 ```
-Execute the command printting from the above command (starts with "export"), and then
+Execute the "export" command printting from the above command (starts with "export")
+```
+export PUBSUB_EMULATOR_HOST=localhost:<PORT>
+```
+Then set up project id.
 ```
 export PUBSUB_PROJECT_ID="simple-pubsub"
 ```
 
 
-if the server and the client are on different machines
+If the server and the client are on different machines<br />
+Set up host and port according to "ifconfig" and the port you given for the server.
 ```
 export PUBSUB_EMULATOR_HOST=<host-ip-address> (eg: maximus.cs.umn.edu:46389)
 export PUBSUB_PROJECT_ID="simple-pubsub"
 ```
+
+7. Run the client <br />
 Finally,
 ```
 ./client <ClientName>
